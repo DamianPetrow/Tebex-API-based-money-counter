@@ -1,16 +1,6 @@
-try:
-    import requests
-except ImportError:
-    print("Installing 'request' module...")
-    import subprocess
-    import sys
-    try:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
-        import requests
-    except Exception as e:
-        print("Couldnt install request module, please install it manually using: pip install requests")
-        sys.exit(1)
-
+import subprocess
+import sys
+import requests
 import datetime
 import os
 
@@ -26,14 +16,14 @@ class C:
     BOLD = '\033[1m'
     ENDC = '\033[0m'
 
-TEBEX_SECRET_KEY = "PASTEHEREYOURTEBEXKEY"
+TEBEX_SECRET_KEY = "PASTEYOURTEBEXGAMESERVERSECREKEYHERE"
 
 def get_all_payments(api_key):
     headers = {'X-Tebex-Secret': api_key}
     all_payments = []
     page = 1
     
-    print(f"{C.CYAN}Fetching data from Tebex... This might take a moment.{C.ENDC}")
+    print(f"{C.CYAN}Getting data from Tebex...{C.ENDC}")
     
     while True:
         params = {'page': page}
@@ -59,10 +49,7 @@ def get_all_payments(api_key):
             page += 1
             
         except requests.exceptions.HTTPError as e:
-            print(f"\n{C.RED}{C.BOLD}HTTP Error: {e.response.status_code}. Please check your TEBEX_SECRET_KEY (29 line){C.ENDC}")
-            return None
-        except requests.exceptions.RequestException as e:
-            print(f"\n{C.RED}{C.BOLD}Internet error: {e}{C.ENDC}")
+            print(f"\n{C.RED}{C.BOLD}HTTP Error: {e.response.status_code} | Please check your TEBEX_SECRET_KEY (29 line){C.ENDC}")
             return None
 
     print(f"\n{C.GREEN}Successfully fetched {len(all_payments)} payments{C.ENDC}")
